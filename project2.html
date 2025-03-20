@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calming Scroll Experience</title>
+   
+   <style>
+
+        body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f5f5f7;
+        color: #1d1d1f;
+        overflow-x: hidden;
+    }
+
+    header {
+    font-size: 56px; 
+    font-weight: 800;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    h2 {
+        font-size: 40px;
+        margin-bottom: 24px;
+        font-weight: 600;
+    }
+
+    .video-section {
+        position: relative;
+        height: 300vh; 
+    }
+
+    .video-container {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .video-container video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+
+    .zoom-section .video-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .zoom-section .video-container video {
+        min-width: 100%;
+        min-height: 100%;
+        transform-origin: center center;
+    }
+
+    .text-section {
+        height: 20vh; 
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        text-align: center;
+        background: linear-gradient(to bottom, #f5f5f7, #e8e8e8, #f5f5f7);
+    }
+
+  
+    </style>
+</head>
+<body>
+
+    <header> Project 2: Calming Scrolls</header>
+
+
+  <section class="text-section">
+    <h2>Scroll to Watch the Waves Move</h2>
+</section>
+
+  
+    <section class="video-section">
+        <div class="video-container">
+            <video src="ocean.mp4" muted playsinline></video>
+        </div>
+    </section>
+
+  
+   <section class="text-section">
+    <h2>Scroll to Zoom in the Forest</h2>
+</section>
+
+
+    <section class="video-section zoom-section">
+        <div class="video-container">
+            <video src="forest.mp4" muted playsinline></video>
+        </div>
+    </section>
+
+ 
+     <section class="text-section">
+        <h2>Scroll to Go from Day to Night</h2>
+    </section> 
+
+   
+    <section class="video-section">
+        <div class="video-container">
+            <video src="mountains.mp4" muted playsinline></video>
+        </div>
+    </section>
+
+  
+    <section class="text-section">
+        <h2>Thank You</h2>
+    </section>
+
+
+    <script>
+        // Regular video scroll effect
+        document.querySelectorAll('.video-section:not(.zoom-section)').forEach(section => {
+            const video = section.querySelector('video');
+            
+           
+            video.currentTime = 0;
+            video.pause();
+            
+            const updateVideoPlayback = () => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                const scrollPosition = window.scrollY;
+                const windowHeight = window.innerHeight;
+                
+                let scrollProgress = (scrollPosition - sectionTop) / (sectionHeight - windowHeight);
+                scrollProgress = Math.max(0, Math.min(scrollProgress, 1));
+                
+                if (video.readyState >= 2 && video.duration) {
+                    video.currentTime = video.duration * scrollProgress;
+                }
+            };
+            
+            window.addEventListener('scroll', updateVideoPlayback);
+            video.addEventListener('loadedmetadata', updateVideoPlayback);
+        });
+        
+        // Zoom effect
+        document.querySelectorAll('.zoom-section').forEach(section => {
+            const video = section.querySelector('video');
+            
+        
+            video.currentTime = 0;
+            video.pause();
+            
+            const updateZoomEffect = () => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                const scrollPosition = window.scrollY;
+                const windowHeight = window.innerHeight;
+                
+                let scrollProgress = (scrollPosition - sectionTop) / (sectionHeight - windowHeight);
+                scrollProgress = Math.max(0, Math.min(scrollProgress, 1));
+                
+             
+                if (video.readyState >= 2 && video.duration) {
+                    video.currentTime = video.duration * scrollProgress;
+                }
+                
+             
+                const zoomScale = 1 + (scrollProgress * 0.5);
+                video.style.transform = `scale(${zoomScale})`;
+            };
+            
+            window.addEventListener('scroll', updateZoomEffect);
+            video.addEventListener('loadedmetadata', updateZoomEffect);
+        });
+    </script>
+</body>
+</html>
